@@ -1,12 +1,12 @@
 const bitbucketjs = require('bitbucketjs')
-const { getName } = require('guld-user')
-const { getPass, getHostName } = require('guld-git-host').util
+const { getName, getAlias } = require('guld-user')
+const { getPass } = require('guld-pass')
 const HOST = 'bitbucket'
 var client
 
 async function getClient (user) {
   user = user || await getName()
-  var pass = await getPass(user, HOST)
+  var pass = await getPass(`${user}/git/${HOST}`)
   return new bitbucketjs({ // eslint-disable-line new-cap
     username: pass.login,
     password: pass.password
@@ -32,7 +32,7 @@ async function createRepo (rname, user, privacy = 'public', options = {}) {
   // validate required field(s)
   if (typeof rname !== 'string' || rname.length === 0) throw new Error('Name is required to create repo.')
   user = user || await getName()
-  var hostuser = await getHostName(user, HOST) || user
+  var hostuser = await getAlias(user, HOST) || user
   // set privacy
   if (!options.hasOwnProperty('is_private')) {
     if (privacy === 'public') options.is_private = false // eslint-disable-line camelcase
@@ -46,7 +46,7 @@ async function createRepo (rname, user, privacy = 'public', options = {}) {
 
 async function listRepos (user) {
   user = user || await getName()
-  var hostuser = await getHostName(user, HOST) || user
+  var hostuser = await getAlias(user, HOST) || user
   client = client || await getClient(user)
   var ls = await client.repo.forOwner(hostuser)
   return ls.values.map(parseRepo)
@@ -54,9 +54,9 @@ async function listRepos (user) {
 
 async function deleteRepo (rname, user) {
   user = user || await getName()
-  var hostuser = await getHostName(user, HOST) || user
+  var hostuser = await getAlias(user, HOST) || user
   client = client || await getClient(user)
-  return await client.repo.delete(`${hostuser}/${rname}`)
+  return client.repo.delete(`${hostuser}/${rname}`)
 }
 
 module.exports = {
