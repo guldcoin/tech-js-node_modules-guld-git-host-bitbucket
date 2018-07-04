@@ -63,5 +63,9 @@ module.exports = {
   getClient: getClient,
   createRepo: createRepo,
   listRepos: listRepos,
-  deleteRepo: deleteRepo
+  deleteRepo: deleteRepo,
+  meta: {
+    'url': 'bitbucket.org',
+    'oauth-required': false
+  }
 }
