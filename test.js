@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 const assert = require('chai').assert
 const { getName } = require('guld-user')
-const { getClient, listRepos, createRepo, deleteRepo } = require('./index.js')
+const { getClient, listRepos, createRepo, deleteRepo, addSSHKey } = require('./index.js')
 
 describe('bitbucket', function () {
   before(async function () {
@@ -24,5 +24,8 @@ describe('bitbucket', function () {
   }).timeout(10000)
   it('deleteRepo', async function () {
     this.repo = await deleteRepo('guld-repo-for-test')
+  }).timeout(10000)
+  it('addSSHKey', async function () {
+    assert.equal(await addSSHKey(), undefined)
   }).timeout(10000)
 })
