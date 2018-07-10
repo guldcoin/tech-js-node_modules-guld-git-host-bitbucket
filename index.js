@@ -11,7 +11,8 @@ var fs
 
 async function getClient (user) {
   user = user || await getName()
-  var pass = await getPass(`${user}/git/${HOST}`)
+  var passuser = process.env.PASSUSER || process.env.USER || user
+  var pass = await getPass(`${passuser}/git/${HOST}`)
   return new bitbucketjs({ // eslint-disable-line new-cap
     username: pass.login,
     password: pass.password
