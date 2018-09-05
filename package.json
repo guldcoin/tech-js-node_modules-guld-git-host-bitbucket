@@ -4,7 +4,7 @@
   "description": "Guld configuration manager for bitbucket.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/_mocha",
+    "test": "PATHUSER='guld'; ./node_modules/mocha/bin/_mocha",
     "lint": "eslint --env browser *.js*",
     "fix": "eslint --fix *.js*",
     "test:lint": "npm run lint && npm run test"
